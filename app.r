@@ -69,7 +69,7 @@ core2_df = unnested_project_result%>%
          assignee_lastknown_state)
 
 patents_dt = as.data.table(core2_df)
-patents_dt
+head(patents_dt)
 #patents_table[1:5, ]
 #str(patents_table)
 #---------------------------------------
@@ -100,32 +100,50 @@ assignees_plot = barplot(table4, xlab = "Assignee Organizations",
                   cex.names = .45,
                   col = "blue")
 str(assignees_plot)
+
+#------------------------------------
 #core objective 4
 core4_df = core2_df
+#-----------------------------------
+#core objective 5
+Inventor = patents_dt$inventor_last_name
 
 #-----------------------------------
 # shiny app
 ui <- fluidPage(
-  
+  # Give the page a title
   titlePanel("CIS 4730 Group Project"),
   #hr(),
   
+  # Generate a row with a sidebar
+  #sidebarLayout(
+  #,
   
-   tabsetPanel(
-    id = 'dataset',
-     tabPanel("Summary", verbatimTextOutput("summary")),
-     tabPanel("Data Table",
+    # Define the sidebar with one input
+    #sidebarPanel(
+     # textInput("inventor", "Inventor's last name contains (e.g., Zeng)")
+      #),
+   
+    # Create a spot for the barplot
+    #mainPanel(
+      tabsetPanel(
+      id = 'dataset',
+      tabPanel("Summary", verbatimTextOutput("summary")),
+      tabPanel("Data Table",
               column(4, 
                      selectInput("assignee", "Assignee:",
                                 c("All", sort(unique(patents_dt$assignee_organization)))
                      )
               ),
               hr(),
+              textInput("inventor", "Inventor's last name contains (e.g., Zeng) Note: case sensitive"),
+              hr(),
               dataTableOutput("mytable2")
               ),
-     tabPanel("Bar Plot", plotOutput("patentsPlot"))
+      tabPanel("Bar Plot", plotOutput("patentsPlot"))
    )
-  
+  #)
+ #) 
 )
 
 
@@ -143,10 +161,16 @@ server <- function(input, output) {
   output$mytable2 <- renderDataTable({
     mydata <- patents_dt
     
+    #drop down menu - filter data table by assignee 
     if (input$assignee != "All") {
-     mydata <- mydata[mydata$assignee_organization == input$assignee]
+     mydata <- mydata[mydata$assignee_organization == input$assignee, ]
     }
-     
+    # text box filter by inventor
+    if (!is.null(input$inventor) && input$inventor != "") {
+      inventor <- input$inventor
+      mydata <- mydata[Inventor %like% inventor, ] 
+      #%>% filter(Inventor %like% inventor)
+    }
     #options = list(orderClasses = TRUE)
     mydata
     })  
