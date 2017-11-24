@@ -153,7 +153,7 @@ server <- function(input, output) {
   # choose columns to display
   #summary_stats2 = summary_stats[sample(nrow(summary_stats), 1000), ]
   # Generate a summary of the dataset ----
-  output$summary <- renderPrint(summary(core1_df))  
+  output$summary <- renderPrint(summary_stats_dt)  
   #output$summary <- renderDataTable(summary_stats_dt, 
                                    # options = list(orderClasses = TRUE))
   
