@@ -233,9 +233,10 @@ ui <- fluidPage(
 
       mainPanel(
         plotOutput("patentsPlot"),
+        dataTableOutput("show"),
         tableOutput("view"),
-        tableOutput("country"),
-        dataTableOutput("show")
+        tableOutput("country")
+        
         )
       )
     )
