@@ -78,13 +78,13 @@ result
 newtable = table(unnested_project_result$assignee_organization, 
                  exclude = NA)
 table3 = sort(newtable, decreasing = TRUE)
-head(table3, n = 5)
+table4 = head(table3, n = 5)
 
-# horizontal bar plot
+#horizontal bar plot
 par(mar = c(5,9,4,2))
 assignees_plot2 = barplot(table4,
-                  xlab = "Number of Patents", horiz = TRUE,
-                  main = "Top Assignee Organizations",
+                  #xlab = "Number of Patents", horiz = TRUE,
+                  #main = "Top Assignee Organizations",
                   xlim = c(0, 8000),
                   cex.names = .40,
                   las = 2,
